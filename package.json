@@ -4,12 +4,13 @@
   "description": "devtinder backend",
   "main": "index.js",
   "scripts": {
-    "start":"node src/index.js" ,
-    "dev":"nodemon src/index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "author": "Dhiraj",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "mongoose": "^8.13.1"
   }
 }
