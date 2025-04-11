@@ -17,12 +17,13 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
       "age",
       "about",
       "skills",
+      "pictureUrl",
     ]);
 
     const data = connectionRequests.map((row) => {
-      return { id: row._id, fromUser: row.fromUserId };
+      return { _id: row._id, fromUserId: row.fromUserId };
     });
-    res.json({ data });
+    res.json({ message: "", data: data });
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -50,6 +51,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
         "age",
         "about",
         "skills",
+        "pictureUrl",
       ])
       .populate("toUserId", [
         "firstName",
@@ -57,6 +59,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
         "age",
         "about",
         "skills",
+        "pictureUrl",
       ]);
 
     const data = connectionRequests.map((row) => {

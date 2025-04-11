@@ -6,7 +6,7 @@ const userAuth = async (req, res, next) => {
     const cookies = req.cookies;
     const { token } = cookies;
     if (!token) {
-      throw new Error("Invalid Token");
+      return res.status(401).send("Please Login");
     }
 
     const decodedMessage = await jwt.verify(token, "DEVTINDER@0709");
@@ -16,7 +16,7 @@ const userAuth = async (req, res, next) => {
     if (!user) {
       throw new Error("User Not Found");
     }
-    req.user = user; 
+    req.user = user;
     next();
   } catch (error) {
     res.status(400).send(error.message);

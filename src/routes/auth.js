@@ -16,8 +16,12 @@ authRouter.post("/signup", async (req, res) => {
       email,
       password: hashPassword,
     });
-    await user.save();
-    res.send("User created");
+    const savedUser = await user.save();
+    const token = await savedUser.getJWT();
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 2 * 3600000),
+    });
+    res.json({ message: "User created", data: savedUser });
   } catch (error) {
     // console.log(error)
     res.status(400).send(error.message);
@@ -39,7 +43,7 @@ authRouter.post("/login", async (req, res) => {
       res.cookie("token", token, {
         expires: new Date(Date.now() + 2 * 3600000),
       });
-      res.send("Login successfully");
+      res.send(user);
     } else {
       throw new Error("Invalid Crendentials");
     }
