@@ -79,7 +79,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     const loggedInUser = req.user;
     let page = req.query.page || 1;
     let limit = req.query.limit || 10;
-    limit = limit > 3 ? 3 : limit;
+    limit = limit > 10 ? 10 : limit;
     let skip = (page - 1) * limit;
     // console.log(page)
     const userConnections = await ConnectionRequest.find({

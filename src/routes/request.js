@@ -2,6 +2,7 @@ const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
+const sendEmail = require("../utils/sendEmail");
 
 const requestRouter = express.Router();
 
@@ -15,10 +16,10 @@ requestRouter.post(
       const toUserId = req.params.toUserId;
       const status = req.params.status;
 
-      const isToUserIdExits = await User.findById({
+      const toUser = await User.findById({
         _id: toUserId,
       });
-      if (!isToUserIdExits) {
+      if (!toUser) {
         throw new Error("User doesn't exits");
       }
       const allowedStatus = ["interested", "ignored"];
@@ -46,10 +47,12 @@ requestRouter.post(
         toUserId,
         status,
       });
-      await connectionRequest.save();
+     const data= await connectionRequest.save();
+     const mailRes = await sendEmail.run(toUser,loggedInUser)
+     console.log(mailRes)
       res.json({
         message: "Connention Request sent",
-        data: connectionRequest,
+        data: data,
       });
     } catch (error) {
       res.status(400).send(error.message);
